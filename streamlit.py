@@ -1,0 +1,36 @@
+import streamlit as st
+import pandas as pd
+from datetime import date, datetime
+
+
+# Filtros sidebar
+
+# Por ano
+# Por empresa (nacionalidade)
+
+
+# Big Numbers
+
+# Total de passageiros transportados
+# Total de carga transportado (ton/kg)
+# Número total de numbers
+# Consumo total de Combustível
+# Distância total voada (agrupado por NACIONALIDADE ou agrupada por EMPRESA)
+
+
+# Gráficos de volume e taxa de tráfego TOTAL (sem agrupamento por empresa ou companhia)
+
+# Voos por trimestre ou mês
+# Passageiros por trimestre
+# As rotas mais movimentadas
+
+
+# Gráficos de companhias aerias
+
+# Total de porcentagem de voos por companhia ou empresa
+# Quantidade de decolagens por companhia ou empresa
+
+
+# Gráficos de análises operacionais
+
+# Distancia média voada 
