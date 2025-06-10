@@ -1,15 +1,17 @@
 import streamlit as st
 import pandas as pd
-from modules.database import initialize_database, dados_tratados
+from modules.data import dados_tratados
+from modules.database import initialize_database
 from modules.pages import dashboard, graficos
-
-# Configurações Gerais da Página
-st.set_page_config(page_title="Dashboard ANAC", layout="wide")
 
 # Inicializar o banco de dados
 conn, cursor = initialize_database()
 
-# Página Principal
+# Streamlit
+
+# Configurações Gerais da Página
+st.set_page_config(page_title="Dashboard ANAC", layout="wide")
+
 # Sidebar
 st.sidebar.title("🔧 Filtros")
 st.sidebar.markdown("## Personalize a sua Análise")
@@ -40,4 +42,4 @@ dados = dados_tratados()
 if menu == "Dashboard":
     dashboard(dados)
 elif menu == "Dados Estatisticos":
-    graficos(dados) 
+    graficos(dados)

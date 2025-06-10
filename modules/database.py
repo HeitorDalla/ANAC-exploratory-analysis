@@ -1,27 +1,16 @@
 import sqlite3
 import pandas as pd
 
-# Função para tratar os dados do CSV
-def dados_tratados():
-    df = pd.read_csv("csv/resumo_anual_2025.csv", delimiter=';', encoding='latin-1')
-
-    df['HORAS VOADAS'] = df['HORAS VOADAS'].str.replace(',', '.', regex=False)
-    df['HORAS VOADAS'] = pd.to_numeric(df['HORAS VOADAS'], errors='coerce')
-
-    df = df.where(pd.notnull(df), None)
-
-    return df
-
 # Função para fazer a conexão com o banco
 def getConnection():
     conn = sqlite3.connect('banco_de_dados.db', check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute('PRAGMA foreign_keys = ON;')
+
     return conn, cursor
 
 # Criação das tabelas no banco
 def createTables(conn, cursor):
-    # Criar a tabela 'empresas' com os nomes corretos das colunas
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS empresas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,28 +53,13 @@ def createTables(conn, cursor):
     )
     ''')
 
-    # Criar índices para otimizar as consultas
-    cursor.execute('''
-    CREATE INDEX IF NOT EXISTS idx_sigla_empresa ON empresas (sigla);
-    ''')
-
-    cursor.execute('''
-    CREATE INDEX IF NOT EXISTS idx_ano_voos ON voos (ano);
-    ''')
-
-    cursor.execute('''
-    CREATE INDEX IF NOT EXISTS idx_aeroporto_origem ON voos (aeroporto_origem_sigla);
-    ''')
-
     conn.commit()
-
-# Função para popular as tabelas no banco
 
 def populate_tables(conn, cursor):
     # Popula a tabela 'empresas' se não houver dados nela
     cursor.execute("SELECT COUNT(*) FROM empresas")
-    if cursor.fetchone()[0] == 0:  # Se a tabela estiver vazia
-        df_empresas = pd.read_csv('csv/empresas.csv')  # Caminho do arquivo empresas.csv
+    if cursor.fetchone()[0] == 0: 
+        df_empresas = pd.read_csv('csv/empresas.csv')
         df_empresas.columns = ['sigla', 'nome', 'nacionalidade']
         df_empresas.to_sql('empresas', conn, if_exists='append', index=False)
 
