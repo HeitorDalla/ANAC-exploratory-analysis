@@ -3,7 +3,7 @@ import pandas as pd
 
 # Função para fazer a conexão com o banco
 def getConnection():
-    conn = sqlite3.connect('banco_de_dados.db', check_same_thread=False)
+    conn = sqlite3.connect('database/banco_de_dados.db', check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute('PRAGMA foreign_keys = ON;')
 
