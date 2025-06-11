@@ -1,4 +1,7 @@
 import streamlit as st
+import seaborn as sns
+import matplotlib.pyplot as plt
+from modules.views import paying_public, non_paying_public
 
 def renderizar (df_filtrado):
     st.title("✈️ Dashboard de Aeroporto")
@@ -6,7 +9,7 @@ def renderizar (df_filtrado):
     st.markdown("---")
 
     # Big Numbers
-    coluna1, coluna2, coluna3, coluna4, coluna5 = st.columns(5)
+    coluna1, coluna2, coluna3 = st.columns(3)
 
     with coluna1:
         passageiros_pagaram = df_filtrado['PASSAGEIROS PAGOS'].sum()
@@ -23,3 +26,21 @@ def renderizar (df_filtrado):
     st.markdown("---")
 
     # Gráficos
+
+    # Gráfico de pizza mostrando a porcentagem em comparação aos pagantes e não pagantes
+    porcentagem_pagante = paying_public()
+    porcentagem_nao_pagante = non_paying_public()
+
+    valores = [porcentagem_pagante, porcentagem_nao_pagante]
+    rotulos = ['Pagantes', 'Não Pagantes']
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.pie(valores,
+           labels=rotulos,
+           autopct='%1.1f%%',
+           startangle=90,
+           colors=sns.color_palette("pastel")
+    )
+
+    ax.set_title("Distribuiçõa por Pagantes", pad=15, fontsize=12)
+    st.pyplot(fig)
