@@ -22,8 +22,8 @@ st.sidebar.markdown("### Agência Nacional de Aviação Civil")
 mes_unicos = st.sidebar.selectbox("Mês", sorted(dados["MÊS"].unique()))
 empresa_unicas = st.sidebar.multiselect("Empresa Aérea", dados["EMPRESA (NOME)"].unique())
 uf_origem_unicos = st.sidebar.multiselect("UF Origem", dados["AEROPORTO DE ORIGEM (UF)"].unique())
-# Aplicar os filtros aos dados
-filtro = dados.copy() # cópia do dados
+
+filtro = dados.copy()
 if mes_unicos:
     filtro = filtro[filtro["MÊS"] == mes_unicos]
 if empresa_unicas:
