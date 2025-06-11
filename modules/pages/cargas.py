@@ -59,10 +59,10 @@ def renderizar(df_filtrado):
         y='CARGA PAGA (KG)',
         title=f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
         labels={'EMPRESA (NOME)': 'Companhia Aérea', 'CARGA PAGA (KG)': 'Carga Paga (KG)'},
-        color='CARGA PAGA (KG)',  # Usando a carga paga como cor
-        color_continuous_scale='Viridis',  # Escolha uma paleta de cores
-        text='CARGA PAGA (KG)',  # Exibindo os valores na barra
-        template='plotly_dark'  # Usando um template bonito
+        color='CARGA PAGA (KG)',
+        color_continuous_scale='Viridis',
+        text='CARGA PAGA (KG)',
+        template='plotly_dark'
     )
     
     # Melhorando os rótulos e a formatação
@@ -71,24 +71,24 @@ def renderizar(df_filtrado):
         width=1000,
         title={
             'text': f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
-            'font': {'size': 24, 'family': 'Arial, sans-serif'},  # Título maior e mais bonito
-            'x': 0.5,  # Centralizando o título
+            'font': {'size': 24, 'family': 'Arial, sans-serif'},
+            'x': 0.5,
             'xanchor': 'center',
         },
         xaxis_title={
             'text': 'Companhia Aérea',
-            'font': {'size': 18, 'family': 'Arial, sans-serif'},  # Tamanho e fonte melhorada para o eixo X
+            'font': {'size': 18, 'family': 'Arial, sans-serif'},
         },
         yaxis_title={
             'text': 'Carga Paga (KG)',
-            'font': {'size': 18, 'family': 'Arial, sans-serif'},  # Tamanho e fonte melhorada para o eixo Y
+            'font': {'size': 18, 'family': 'Arial, sans-serif'},
         },
-        xaxis_tickangle=-45,  # Girando os rótulos no eixo X para melhor legibilidade
-        xaxis={'tickmode': 'array', 'tickvals': carga_top['EMPRESA (NOME)']},  # Ajuste dos ticks do eixo X
-        yaxis={'tickformat': ',.0f'},  # Formatação de números no eixo Y
-        plot_bgcolor='rgba(0,0,0,0)',  # Fundo transparente para destacar as barras
-        paper_bgcolor='rgba(0,0,0,0)',  # Fundo transparente para toda a área do gráfico
-        margin=dict(l=40, r=40, t=40, b=100)  # Ajuste das margens
+        xaxis_tickangle=-45,
+        xaxis={'tickmode': 'array', 'tickvals': carga_top['EMPRESA (NOME)']},
+        yaxis={'tickformat': ',.0f'},
+        plot_bgcolor='rgba(0,0,0,0)', 
+        paper_bgcolor='rgba(0,0,0,0)',
+        margin=dict(l=40, r=40, t=40, b=100)
     )
     
     # Exibindo o gráfico
@@ -97,5 +97,3 @@ def renderizar(df_filtrado):
     # Exibindo o dataframe filtrado
     st.markdown("<h1 style='text-align: center;'>Exibição da tabela</h1>", unsafe_allow_html=True)
     st.dataframe(df_filtrado)
-
-    
