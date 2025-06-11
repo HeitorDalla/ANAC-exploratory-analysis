@@ -47,7 +47,7 @@ with abas[2]:
     aeroportos.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
 
 with abas[3]:
-    cargas.renderizar(filtro)
+    cargas.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
 
 with abas[4]:
     rotas.renderizar(filtro)
