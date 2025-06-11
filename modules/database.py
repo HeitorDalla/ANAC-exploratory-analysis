@@ -19,14 +19,16 @@ def createTables(conn, cursor):
         nome TEXT
     )
     ''')
-    
+
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS voos_completos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         empresa_id INTEGER,
+        empresa_nome TEXT,
         ano INTEGER,
         mes INTEGER,
         aeroporto_origem_sigla TEXT,
+        aeroporto_origem_uf TEXT,
         passageiros_pagos INTEGER,
         passageiros_gratis INTEGER,
         carga_paga_kg REAL,
@@ -38,7 +40,7 @@ def createTables(conn, cursor):
         FOREIGN KEY (empresa_id) REFERENCES empresas(id)
     )
     ''')
-    
+
     conn.commit()
 
 def populate_tables(conn, cursor):
@@ -57,13 +59,10 @@ def populate_tables(conn, cursor):
             VALUES (?, ?)
         ''', (empresa['EMPRESA (SIGLA)'], empresa['EMPRESA (NOME)']))
     
-    # Inserir dados de voos
     for _, row in dados.iterrows():
-        # Buscar ID da empresa
         cursor.execute('SELECT id FROM empresas WHERE sigla = ?', (row['EMPRESA (SIGLA)'],))
         empresa_id = cursor.fetchone()[0]
         
-        # Converter valores para tipos apropriados
         passageiros_pagos = int(row['PASSAGEIROS PAGOS']) if pd.notna(row['PASSAGEIROS PAGOS']) else 0
         passageiros_gratis = int(row['PASSAGEIROS GRÁTIS']) if pd.notna(row['PASSAGEIROS GRÁTIS']) else 0
         carga_paga_kg = float(row['CARGA PAGA (KG)']) if pd.notna(row['CARGA PAGA (KG)']) else 0.0
@@ -72,17 +71,20 @@ def populate_tables(conn, cursor):
         rpk = int(row['RPK']) if pd.notna(row['RPK']) else 0.0
         atk = int(row['ATK']) if pd.notna(row['ATK']) else 0.0
         rtk = int(row['RTK']) if pd.notna(row['RTK']) else 0.0
-        
+
         cursor.execute('''
             INSERT INTO voos_completos 
-            (empresa_id, ano, mes, aeroporto_origem_sigla, passageiros_pagos, 
-             passageiros_gratis, carga_paga_kg, horas_voadas, carga_paga_km, rpk, atk, rtk)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (empresa_id, empresa_nome, ano, mes, aeroporto_origem_sigla, aeroporto_origem_uf,
+             passageiros_pagos, passageiros_gratis, carga_paga_kg, horas_voadas,
+             carga_paga_km, rpk, atk, rtk)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             empresa_id,
+            row['EMPRESA (NOME)'],
             int(row['ANO']),
             int(row['MÊS']),
             row['AEROPORTO DE ORIGEM (SIGLA)'],
+            row['AEROPORTO DE ORIGEM (UF)'],
             passageiros_pagos,
             passageiros_gratis,
             carga_paga_kg,

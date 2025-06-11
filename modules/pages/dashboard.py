@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from modules.views import paying_public, non_paying_public
 
-def renderizar (df_filtrado):
+def renderizar (df_filtrado, mes, empresa, uf):
     st.title("✈️ Dashboard de Aeroporto")
     st.markdown("### Análise completa do Balanço")
     st.markdown("---")
@@ -28,19 +28,22 @@ def renderizar (df_filtrado):
     # Gráficos
 
     # Gráfico de pizza mostrando a porcentagem em comparação aos pagantes e não pagantes
-    porcentagem_pagante = paying_public()
-    porcentagem_nao_pagante = non_paying_public()
+    empresa_para_analise = empresa[0] if empresa else None
+    
+    porcentagem_pagante = paying_public(mes=mes, empresa=empresa, uf=uf)
+    porcentagem_nao_pagante = non_paying_public(mes=mes, empresa=empresa, uf=uf)
 
     valores = [porcentagem_pagante, porcentagem_nao_pagante]
-    rotulos = ['Pagantes', 'Não Pagantes']
 
-    fig, ax = plt.subplots(figsize=(8, 5))
-    ax.pie(valores,
-           labels=rotulos,
-           autopct='%1.1f%%',
-           startangle=90,
-           colors=sns.color_palette("pastel")
-    )
-
-    ax.set_title("Distribuiçõa por Pagantes", pad=15, fontsize=12)
-    st.pyplot(fig)
+    if sum(valores) == 0:
+        st.warning("Não há dados suficientes para gerar o gráfico de passageiros pagantes e não pagantes.")
+    else:
+        rotulos = ['Pagantes', 'Não Pagantes']
+        fig, ax = plt.subplots(figsize=(8, 5))
+        ax.pie(valores,
+            labels=rotulos,
+            autopct='%1.1f%%',
+            startangle=90,
+            colors=sns.color_palette("pastel"))
+        ax.set_title("Distribuição por Pagantes", pad=15, fontsize=12)
+        st.pyplot(fig)
