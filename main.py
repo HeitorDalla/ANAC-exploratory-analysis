@@ -22,7 +22,6 @@ st.sidebar.markdown("### Agência Nacional de Aviação Civil")
 mes_unicos = st.sidebar.selectbox("Mês", sorted(dados["MÊS"].unique()))
 empresa_unicas = st.sidebar.multiselect("Empresa Aérea", dados["EMPRESA (NOME)"].unique())
 uf_origem_unicos = st.sidebar.multiselect("UF Origem", dados["AEROPORTO DE ORIGEM (UF)"].unique())
-
 # Aplicar os filtros aos dados
 filtro = dados.copy() # cópia do dados
 if mes_unicos:
@@ -36,9 +35,6 @@ if uf_origem_unicos:
 
 # Navegação dentro das páginas principais
 abas = st.tabs(["🏠 Visão Geral", "🗺️ Regiões", "✈️ Aeroportos", "📦 Cargas", "🔁 Rotas"])
-
-with abas[0]:
-    dashboard.renderizar(filtro)
 
 with abas[1]:
     regioes.renderizar(filtro)

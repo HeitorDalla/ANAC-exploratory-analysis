@@ -1,6 +1,12 @@
 import streamlit as st
 from modules.database import initialize_database
 
+    #- Distância Total Voada (KM) ✈️ – Mostra quantos quilômetros foram percorridos no transporte de cargas.Add commentMore actions
+    #- Total de Carga Paga (KG) 📦 – Exibe o volume total de carga paga transportada.
+    #- Total de Carga Grátis (KG) 🎁 – Indica o peso total da carga gratuita transportada.
+
+    #GRAFICOS top #5 aviações com mais cargas
+
 def colored_card(metric_emoji, metric_label, metric_value, bg_color):
     st.markdown(
         f"""
@@ -15,21 +21,20 @@ def colored_card(metric_emoji, metric_label, metric_value, bg_color):
     )
 
 def renderizar(df_filtrado):
-    st.markdown("<h1 style='text-align:center;'>📦 Dashboard Cargas</h1>", unsafe_allow_html=True)
-
-    conn, cursor = initialize_database()
-
-    # Aplicação dos filtros nos Big Numbers
-    coluna1, coluna2, coluna3 = st.columns(3)
+    # Título da página
+    st.title("Análise de Cargas")
     
-    with coluna1:
-        total_carga = total_carga_paga(mes, empresa, uf)
-        colored_card("📦", "Total Cargas Pagas", total_carga, "#4CAF50")
+    # Cálculos
+    distancia_total = df_filtrado['DISTÂNCIA'].sum() if 'DISTÂNCIA' in df_filtrado.columns else 0
+    carga_paga_total = df_filtrado['PESO_CARGA_PAGA'].sum() if 'PESO_CARGA_PAGA' in df_filtrado.columns else 0
+    carga_gratis_total = df_filtrado['PESO_CARGA_GRATIS'].sum() if 'PESO_CARGA_GRATIS' in df_filtrado.columns else 0
     
-    with coluna2:
-        total_distancia_voada = distancia_total_voada(mes, empresa, uf)
-        colored_card("✈️", "Distância Total Voada", total_distancia_voada, "#FF9800")
-
-    with coluna3:
-        media_carga_por_km = carga_por_km(mes, empresa, uf)
-        colored_card("🎁", "Carga Paga por KM", media_carga_por_km, "#2196F3")
+    # Exibindo os dados calculados
+    st.write(f"**Distância Total Voada (KM) ✈️**: {distancia_total} km")
+    st.write(f"**Total de Carga Paga (KG) 📦**: {carga_paga_total} kg")
+    st.write(f"**Total de Carga Grátis (KG) 🎁**: {carga_gratis_total} kg")
+    
+    # Exibindo o dataframe filtrado
+    st.write("Exibindo dados filtrados:")
+    st.dataframe(df_filtrado)
+    
