@@ -1,0 +1,23 @@
+# Criando um norte para Análise ser feita
+
+# Escolhemos simular que somos analistas de dados da ENAC 
+e que precisamos apresentar um dashboard para os gestores da ANAC com o objetivo de entender
+qual o desempenho e obstáculos do setor aéreo nacional.
+
+
+# Introdução
+O setor aéreo é um dos pilares da mobilidade nacional e internacional, 
+exercendo papel estratégico na integração territorial e no desenvolvimento econômico do Brasil. 
+Neste contexto, a Agência Nacional de Aviação Civil (ANAC) 
+necessita de ferramentas analíticas que facilitem o monitoramento da infraestrutura aeroportuária, 
+o volume de passageiros, o fluxo de aeronaves e a movimentação de cargas em todo o país.
+
+Este projeto tem como objetivo desenvolver um dashboard interativo utilizando
+Python, Streamlit, SQLite e Pandas, com base em dados públicos da ANAC, 
+a fim de oferecer visão estratégica e operacional sobre o transporte aéreo brasileiro. 
+O público-alvo são gestores da ANAC, que poderão utilizar os insights gerados
+para apoiar decisões regulatórias, planejamento de políticas públicas e ações de fiscalização.
+
+A solução contempla indicadores-chave (KPIs), filtros personalizáveis, visualizações interativas e 
+análises comparativas entre aeroportos, regiões e períodos, 
+proporcionando uma visão clara e acessível do desempenho do setor em diferentes dimensões.
