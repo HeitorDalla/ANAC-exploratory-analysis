@@ -41,7 +41,7 @@ with abas[0]:
     dashboard.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
 
 with abas[1]:
-    regioes.renderizar(filtro)
+    regioes.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
 
 with abas[2]:
     aeroportos.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
@@ -50,4 +50,4 @@ with abas[3]:
     cargas.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
 
 with abas[4]:
-    rotas.renderizar(filtro)
+    rotas.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)

@@ -15,7 +15,7 @@ def colored_card(metric_emoji, metric_label, metric_value, bg_color):
         unsafe_allow_html=True
     )
 
-def renderizar(mes, empresa, uf):
+def renderizar(df_filtrado, mes, empresa, uf):
     st.markdown("<h1 style='text-align:center;'>📦 Dashboard Cargas</h1>", unsafe_allow_html=True)
 
     conn, cursor = initialize_database()

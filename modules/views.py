@@ -5,7 +5,7 @@ conn, cursor = initialize_database()
 
 def paying_public(mes=None, empresa=None, uf=None):
     query = '''
-        SELECT SUM(vc.passageiros_pagos)
+        SELECT SUM(vc."passageiros_pagos")
         FROM voos_completos vc
         INNER JOIN empresas e ON vc.empresa_id = e.id
         WHERE 1=1
@@ -29,7 +29,7 @@ def paying_public(mes=None, empresa=None, uf=None):
 
 def non_paying_public(mes=None, empresa=None, uf=None):
     query = '''
-        SELECT SUM(vc.passageiros_gratis)
+        SELECT SUM(vc."passageiros_gratis")
         FROM voos_completos vc
         INNER JOIN empresas e ON vc.empresa_id = e.id
         WHERE 1=1
@@ -53,7 +53,7 @@ def non_paying_public(mes=None, empresa=None, uf=None):
 
 def total_carga_paga(mes=None, empresa=None, uf=None):
     query = '''
-        SELECT SUM(vc.carga_paga_kg)
+        SELECT SUM(vc."carga_paga_kg")
         FROM voos_completos vc
         INNER JOIN empresas e ON vc.empresa_id = e.id
         WHERE 1 = 1
@@ -78,10 +78,9 @@ def total_carga_paga(mes=None, empresa=None, uf=None):
     
     return resultado
 
-
 def distancia_total_voada(mes=None, empresa=None, uf=None):
     query = '''
-        SELECT SUM(vc.carga_paga_km)
+        SELECT SUM(vc."carga_paga_km")
         FROM voos_completos vc
         INNER JOIN empresas e ON vc.empresa_id = e.id
         WHERE 1 = 1
