@@ -1,9 +1,8 @@
 import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
-from modules.views import paying_public, non_paying_public
 
-def renderizar (df_filtrado, mes, empresa, uf):
+def renderizar (df_filtrado):
     st.title("✈️ Dashboard de Aeroporto")
     st.markdown("### Análise completa do Balanço")
     st.markdown("---")

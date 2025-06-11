@@ -38,16 +38,16 @@ if uf_origem_unicos:
 abas = st.tabs(["🏠 Visão Geral", "🗺️ Regiões", "✈️ Aeroportos", "📦 Cargas", "🔁 Rotas"])
 
 with abas[0]:
-    dashboard.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
+    dashboard.renderizar(filtro)
 
 with abas[1]:
-    regioes.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
+    regioes.renderizar(filtro)
 
 with abas[2]:
-    aeroportos.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
+    aeroportos.renderizar(filtro)
 
 with abas[3]:
-    cargas.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
+    cargas.renderizar(filtro)
 
 with abas[4]:
-    rotas.renderizar(filtro, mes_unicos, empresa_unicas, uf_origem_unicos)
+    rotas.renderizar(filtro)
