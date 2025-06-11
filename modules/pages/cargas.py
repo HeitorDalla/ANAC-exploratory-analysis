@@ -1,11 +1,6 @@
 import streamlit as st
-from modules.database import initialize_database
-
-    #- Distância Total Voada (KM) ✈️ – Mostra quantos quilômetros foram percorridos no transporte de cargas.Add commentMore actions
-    #- Total de Carga Paga (KG) 📦 – Exibe o volume total de carga paga transportada.
-    #- Total de Carga Grátis (KG) 🎁 – Indica o peso total da carga gratuita transportada.
-
-    #GRAFICOS top #5 aviações com mais cargas
+import pandas as pd
+import plotly.express as px
 
 def colored_card(metric_emoji, metric_label, metric_value, bg_color):
     st.markdown(
@@ -21,20 +16,86 @@ def colored_card(metric_emoji, metric_label, metric_value, bg_color):
     )
 
 def renderizar(df_filtrado):
-    # Título da página
-    st.title("Análise de Cargas")
+
+    st.markdown("<h1 style='text-align: center;'>📦 Análise de Cargas</h1>", unsafe_allow_html=True)
     
     # Cálculos
-    distancia_total = df_filtrado['DISTÂNCIA'].sum() if 'DISTÂNCIA' in df_filtrado.columns else 0
-    carga_paga_total = df_filtrado['PESO_CARGA_PAGA'].sum() if 'PESO_CARGA_PAGA' in df_filtrado.columns else 0
-    carga_gratis_total = df_filtrado['PESO_CARGA_GRATIS'].sum() if 'PESO_CARGA_GRATIS' in df_filtrado.columns else 0
+    distancia_total = df_filtrado['DISTÂNCIA VOADA (KM)'].sum() if 'DISTÂNCIA VOADA (KM)' in df_filtrado.columns else 0
+    carga_paga_total = df_filtrado['CARGA PAGA (KG)'].sum() if 'CARGA PAGA (KG)' in df_filtrado.columns else 0
+    carga_gratis_total = df_filtrado['CARGA GRÁTIS (KG)'].sum() if 'CARGA GRÁTIS (KG)' in df_filtrado.columns else 0
+    carga_paga_km_total = df_filtrado['CARGA PAGA KM'].sum() if 'CARGA PAGA KM' in df_filtrado.columns else 0
     
+    st.markdown('')
+
     # Exibindo os dados calculados
-    st.write(f"**Distância Total Voada (KM) ✈️**: {distancia_total} km")
-    st.write(f"**Total de Carga Paga (KG) 📦**: {carga_paga_total} kg")
-    st.write(f"**Total de Carga Grátis (KG) 🎁**: {carga_gratis_total} kg")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        colored_card("📦", "Total Cargas Pagas", carga_paga_total, "#4CAF50")
+    with col2:
+        colored_card("🚚", "Cargas Pagas Corridas", carga_paga_km_total, "#9C27B0")
+    with col3:
+        colored_card("✈️", "Distância Total Voadas", distancia_total, "#FF9800")
+    with col4:
+        colored_card("🎁", "Total Cargas Gratis", carga_gratis_total, "#2196F3")
+
+    st.markdown('')
+         
+    # Gráfico interativo para as Top 10 ou Top 5 companhias aéreas
+    st.subheader("Top Companhias Aéreas com Mais Cargas Pagas (KG) 📊")
+
+    # Agrupar por companhia aérea e somar o peso das cargas pagas
+    carga_por_empresa = df_filtrado.groupby('EMPRESA (NOME)')['CARGA PAGA (KG)'].sum().sort_values(ascending=False)
     
+    # Opção para escolher entre Top 5 e Top 10
+    top_n = st.selectbox("Selecione o número de Top Empresas", [5, 10], index=1)
+    
+    # Selecionando os Top N
+    carga_top = carga_por_empresa.head(top_n).reset_index()
+
+    # Criando o gráfico com Plotly
+    fig = px.bar(
+        carga_top,
+        x='EMPRESA (NOME)', 
+        y='CARGA PAGA (KG)',
+        title=f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
+        labels={'EMPRESA (NOME)': 'Companhia Aérea', 'CARGA PAGA (KG)': 'Carga Paga (KG)'},
+        color='CARGA PAGA (KG)',  # Usando a carga paga como cor
+        color_continuous_scale='Viridis',  # Escolha uma paleta de cores
+        text='CARGA PAGA (KG)',  # Exibindo os valores na barra
+        template='plotly_dark'  # Usando um template bonito
+    )
+    
+    # Melhorando os rótulos e a formatação
+    fig.update_layout(
+        height=500,
+        width=1000,
+        title={
+            'text': f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
+            'font': {'size': 24, 'family': 'Arial, sans-serif'},  # Título maior e mais bonito
+            'x': 0.5,  # Centralizando o título
+            'xanchor': 'center',
+        },
+        xaxis_title={
+            'text': 'Companhia Aérea',
+            'font': {'size': 18, 'family': 'Arial, sans-serif'},  # Tamanho e fonte melhorada para o eixo X
+        },
+        yaxis_title={
+            'text': 'Carga Paga (KG)',
+            'font': {'size': 18, 'family': 'Arial, sans-serif'},  # Tamanho e fonte melhorada para o eixo Y
+        },
+        xaxis_tickangle=-45,  # Girando os rótulos no eixo X para melhor legibilidade
+        xaxis={'tickmode': 'array', 'tickvals': carga_top['EMPRESA (NOME)']},  # Ajuste dos ticks do eixo X
+        yaxis={'tickformat': ',.0f'},  # Formatação de números no eixo Y
+        plot_bgcolor='rgba(0,0,0,0)',  # Fundo transparente para destacar as barras
+        paper_bgcolor='rgba(0,0,0,0)',  # Fundo transparente para toda a área do gráfico
+        margin=dict(l=40, r=40, t=40, b=100)  # Ajuste das margens
+    )
+    
+    # Exibindo o gráfico
+    st.plotly_chart(fig)
+
     # Exibindo o dataframe filtrado
-    st.write("Exibindo dados filtrados:")
+    st.markdown("<h1 style='text-align: center;'>Exibição da tabela</h1>", unsafe_allow_html=True)
     st.dataframe(df_filtrado)
+
     
