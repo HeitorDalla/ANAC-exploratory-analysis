@@ -31,6 +31,10 @@ def createTables(conn, cursor):
         passageiros_gratis INTEGER,
         carga_paga_kg REAL,
         horas_voadas REAL,
+        carga_paga_km REAL,
+        rpk REAL,
+        atk REAL,
+        rtk REAL,
         FOREIGN KEY (empresa_id) REFERENCES empresas(id)
     )
     ''')
@@ -64,12 +68,16 @@ def populate_tables(conn, cursor):
         passageiros_gratis = int(row['PASSAGEIROS GRÁTIS']) if pd.notna(row['PASSAGEIROS GRÁTIS']) else 0
         carga_paga_kg = float(row['CARGA PAGA (KG)']) if pd.notna(row['CARGA PAGA (KG)']) else 0.0
         horas_voadas = float(row['HORAS VOADAS']) if pd.notna(row['HORAS VOADAS']) else 0.0
+        carga_paga_km = int(row['CARGA PAGA KM']) if pd.notna(row['CARGA PAGA KM']) else 0.0
+        rpk = int(row['RPK']) if pd.notna(row['RPK']) else 0.0
+        atk = int(row['ATK']) if pd.notna(row['ATK']) else 0.0
+        rtk = int(row['RTK']) if pd.notna(row['RTK']) else 0.0
         
         cursor.execute('''
             INSERT INTO voos_completos 
             (empresa_id, ano, mes, aeroporto_origem_sigla, passageiros_pagos, 
-             passageiros_gratis, carga_paga_kg, horas_voadas)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+             passageiros_gratis, carga_paga_kg, horas_voadas, carga_paga_km, rpk, atk, rtk)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             empresa_id,
             int(row['ANO']),
@@ -78,7 +86,11 @@ def populate_tables(conn, cursor):
             passageiros_pagos,
             passageiros_gratis,
             carga_paga_kg,
-            horas_voadas
+            horas_voadas,
+            carga_paga_km,
+            rpk,
+            atk,
+            rtk
         ))
     
     conn.commit()
