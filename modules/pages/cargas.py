@@ -6,7 +6,7 @@ def colored_card(metric_emoji, metric_label, metric_value, bg_color):
     st.markdown(
         f"""
         <div style='background-color:{bg_color}; padding:20px; border-radius:10px; text-align:center;'>
-            <p style='margin:0; font-weight:bold; color:white; font-size:24px;'>
+            <p style='margin:0; font-weight:bold; color:white; font-size:24px; min-height:50px'>
                 <span style='font-size:36px;'>{metric_emoji}</span> {metric_label}
             </p>
             <p style='margin:0; font-size:36px; color:white; font-weight:bold;'>{metric_value}</p>
@@ -68,16 +68,12 @@ def renderizar(df_filtrado):
     # Melhorando os rótulos e a formatação
     fig.update_layout(
         height=500,
-        width=1000,
+        width=2000,
         title={
             'text': f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
             'font': {'size': 24, 'family': 'Arial, sans-serif'},
             'x': 0.5,
             'xanchor': 'center',
-        },
-        xaxis_title={
-            'text': 'Companhia Aérea',
-            'font': {'size': 18, 'family': 'Arial, sans-serif'},
         },
         yaxis_title={
             'text': 'Carga Paga (KG)',
@@ -96,4 +92,4 @@ def renderizar(df_filtrado):
 
     # Exibindo o dataframe filtrado
     st.markdown("<h1 style='text-align: center;'>Exibição da tabela</h1>", unsafe_allow_html=True)
-    st.dataframe(df_filtrado)
+    st.dataframe(df_filtrado[['ANO', 'MÊS', 'EMPRESA (NOME)','EMPRESA (SIGLA)', 'DISTÂNCIA VOADA (KM)','HORAS VOADAS' ,'CARGA PAGA (KG)', 'CARGA GRÁTIS (KG)',]])
