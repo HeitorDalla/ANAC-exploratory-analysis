@@ -31,15 +31,19 @@ def renderizar (df_filtrado):
     porcentagem_nao_pagante = df_filtrado['PASSAGEIROS GRÁTIS'].sum()
 
     valores = [porcentagem_pagante, porcentagem_nao_pagante]
+    total = porcentagem_pagante + porcentagem_nao_pagante
 
-    rotulos = ['Pagantes', 'Não Pagantes']
-    fig, ax = plt.subplots(figsize=(8, 5))
+    if total > 0:
+        rotulos = ['Pagantes', 'Não Pagantes']
+        fig, ax = plt.subplots(figsize=(8, 5))
 
-    ax.pie(valores,
-        labels=rotulos,
-        autopct='%1.1f%%',
-        startangle=90,
-        colors=sns.color_palette("pastel"))
-    ax.set_title("Distribuição por Pessoas Pagantes", pad=15, fontsize=12)
+        ax.pie(valores,
+            labels=rotulos,
+            autopct='%1.1f%%',
+            startangle=90,
+            colors=sns.color_palette("pastel"))
+        ax.set_title("Distribuição por Pessoas Pagantes", pad=15, fontsize=12)
 
-    st.pyplot(fig)
+        st.pyplot(fig)
+    else:
+        st.warning("Não há dados para serem exibidos.")
