@@ -4,6 +4,20 @@ from modules.data import dados_tratados, ordem_meses
 from modules.database import initialize_database
 from modules.pages import dashboard, cargas, aeroportos, regioes, rotas
 
+
+def colored_card(metric_emoji, metric_label, metric_value, bg_color):
+    st.markdown(
+        f"""
+        <div style='background-color:{bg_color}; padding:20px; border-radius:10px; text-align:center;'>
+            <p style='margin:0; font-weight:bold; color:white; font-size:24px; min-height:50px'>
+                <span style='font-size:36px;'>{metric_emoji}</span> {metric_label}
+            </p>
+            <p style='margin:0; font-size:36px; color:white; font-weight:bold;'>{metric_value}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 # Inicializar o banco de dados
 conn, cursor = initialize_database()
 
