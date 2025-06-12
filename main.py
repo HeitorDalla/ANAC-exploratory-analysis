@@ -35,7 +35,7 @@ if uf_origem_unicos:
 # Navegação dentro das páginas principais
 abas = st.tabs(["🏠 Visão Geral", "🗺️ Regiões", "✈️ Aeroportos", "📦 Cargas", "🔁 Rotas"])
 
-with abas[0j]:
+with abas[0]:
     dashboard.renderizar(filtro)
 
 with abas[1]:
