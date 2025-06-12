@@ -2,14 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-def colored_card(metric_emoji, metric_label, metric_value, bg_color):
+def colored_card(metric_emoji, metric_label,metric_value, metric_type ,bg_color):
     st.markdown(
         f"""
         <div style='background-color:{bg_color}; padding:20px; border-radius:10px; text-align:center;'>
             <p style='margin:0; font-weight:bold; color:white; font-size:24px; min-height:50px'>
                 <span style='font-size:36px;'>{metric_emoji}</span> {metric_label}
             </p>
-            <p style='margin:0; font-size:36px; color:white; font-weight:bold;'>{metric_value}</p>
+            <p style='margin:0; font-size:36px; color:white; font-weight:bold;'>{metric_value} {metric_type}</p>
         </div>
         """,
         unsafe_allow_html=True
@@ -20,26 +20,26 @@ def renderizar(df_filtrado):
     st.markdown("<h1 style='text-align: center;'>📦 Análise de Cargas</h1>", unsafe_allow_html=True)
     
     # Cálculos
-    distancia_total = df_filtrado['DISTÂNCIA VOADA (KM)'].sum() if 'DISTÂNCIA VOADA (KM)' in df_filtrado.columns else 0
-    carga_paga_total = df_filtrado['CARGA PAGA (KG)'].sum() if 'CARGA PAGA (KG)' in df_filtrado.columns else 0
-    carga_gratis_total = df_filtrado['CARGA GRÁTIS (KG)'].sum() if 'CARGA GRÁTIS (KG)' in df_filtrado.columns else 0
-    carga_paga_km_total = df_filtrado['CARGA PAGA KM'].sum() if 'CARGA PAGA KM' in df_filtrado.columns else 0
+    distancia_total = int(df_filtrado['DISTÂNCIA VOADA (KM)'].sum()) if 'DISTÂNCIA VOADA (KM)' in df_filtrado.columns else 0
+    carga_paga_total = int(df_filtrado['CARGA PAGA (KG)'].sum()) if 'CARGA PAGA (KG)' in df_filtrado.columns else 0
+    carga_gratis_total = int(df_filtrado['CARGA GRÁTIS (KG)'].sum()) if 'CARGA GRÁTIS (KG)' in df_filtrado.columns else 0
+    horas_voadas_total = int(df_filtrado['HORAS VOADAS'].sum()) if 'HORAS VOADAS' in df_filtrado.columns else 0
     
     st.markdown('')
 
     # Exibindo os dados calculados
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        colored_card("📦", "Total Cargas Pagas", carga_paga_total, "#4CAF50")
+        colored_card("📦", "Total Cargas Pagas", carga_paga_total, "Cargas" ,"#4CAF50")
     with col2:
-        colored_card("🚚", "Cargas Pagas Corridas", carga_paga_km_total, "#9C27B0")
+        colored_card("🎁", "Total Cargas Gratis", carga_gratis_total, "Cargas","#2196F3")
     with col3:
-        colored_card("✈️", "Distância Total Voadas", distancia_total, "#FF9800")
+        colored_card("✈️", "Distância Total Voadas", distancia_total, "KM" ,"#FF9800")
     with col4:
-        colored_card("🎁", "Total Cargas Gratis", carga_gratis_total, "#2196F3")
+        colored_card("🕑", "Horas Voadas", horas_voadas_total, "Horas","#9C27B0")
 
-    st.markdown('')
-         
+    st.markdown('<br><br>', unsafe_allow_html=True)
+ 
     # Gráfico interativo para as Top 10 ou Top 5 companhias aéreas
     st.subheader("Top Companhias Aéreas com Mais Cargas Pagas (KG) 📊")
 
