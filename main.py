@@ -3,6 +3,8 @@ from modules.data import dados_tratados
 from modules.database import initialize_database
 from modules.pages import dashboard, cargas, regioes, rotas
 
+# Configurações Gerais da Página
+st.set_page_config(page_title="Dashboard ANAC", layout="wide")
 
 def colored_card(metric_emoji, metric_label, metric_value, bg_color):
     st.markdown(
@@ -29,18 +31,29 @@ dados = dados_tratados()
 
 # Streamlit
 
-# Configurações Gerais da Página
-st.set_page_config(page_title="Dashboard ANAC", layout="wide")
 
-# Sidebar - Filtros Globais
-# st.sidebar.image("img/logo_anac.png", width=180)
+
+st.markdown("""
+    <style>
+    .stTabs [data-baseweb="tab"] {
+        font-size: 1.5rem !important;
+        padding: 1.2rem 2rem !important;
+        font-weight: 600 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
 st.sidebar.markdown("### Agência Nacional de Aviação Civil")
 meses_ordenados = [m for m in ordem_meses if m in dados["MÊS"].unique()]
+
 # Filtros aplicáveis a todas as páginas
 mes_unicos = st.sidebar.selectbox("Mês", meses_ordenados)
 empresa_unicas = st.sidebar.multiselect("Empresa Aérea", dados["EMPRESA (NOME)"].unique())
-uf_origem_unicos = st.sidebar.multiselect("UF Origem", dados["AEROPORTO DE ORIGEM (UF)"].unique())
+ufs_disponiveis = dados["AEROPORTO DE ORIGEM (UF)"].unique()
+uf_origem_unicos = st.sidebar.multiselect("UF Origem", ufs_disponiveis if "PR" in ufs_disponiveis else [])
 
+# Aplicação dos filtros
 filtro = dados.copy()
 if mes_unicos:
     filtro = filtro[filtro["MÊS"] == mes_unicos]
@@ -48,7 +61,6 @@ if empresa_unicas:
     filtro = filtro[filtro["EMPRESA (NOME)"].isin(empresa_unicas)]
 if uf_origem_unicos:
     filtro = filtro[filtro["AEROPORTO DE ORIGEM (UF)"].isin(uf_origem_unicos)]
-# ADICIONAR BOTÃO DE RESETAR TODOS OS FILTROS -----
 
 # Navegação dentro das páginas principais
 abas = st.tabs(["🏠 Visão Geral", "🗺️ Regiões", "📦 Cargas", "🔁 Rotas"])
