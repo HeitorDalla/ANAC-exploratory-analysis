@@ -30,9 +30,6 @@ conn, cursor = initialize_database()
 dados = dados_tratados()
 
 # Streamlit
-
-
-
 st.markdown("""
     <style>
     .stTabs [data-baseweb="tab"] {
@@ -42,7 +39,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
 
 st.sidebar.markdown("### Agência Nacional de Aviação Civil")
 meses_ordenados = [m for m in ordem_meses if m in dados["MÊS"].unique()]
@@ -57,6 +53,7 @@ uf_origem_unicos = st.sidebar.multiselect("UF Origem", ufs_disponiveis if "PR" i
 
 # Aplicação dos filtros
 filtro = dados.copy()
+
 if mes_selecionado != 'Todos os Meses':
     filtro = filtro[filtro["MÊS"] == mes_selecionado]
 if empresa_unicas:
