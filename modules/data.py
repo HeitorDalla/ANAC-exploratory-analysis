@@ -23,6 +23,6 @@ def dados_tratados():
     df['ANO'] = df['ANO'].astype(str)
 
     df = df.where(pd.notnull(df), None) # para compatibilidade com o sqlite
-    # df["MÊS"] = df["MÊS"].map(meses)
+    df["MÊS"] = df["MÊS"].map(meses)
 
     return df

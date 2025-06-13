@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 from modules.data import dados_tratados
 from modules.database import initialize_database
 from modules.pages import dashboard, cargas, regioes, rotas
