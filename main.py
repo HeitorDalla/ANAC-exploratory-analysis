@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from modules.data import dados_tratados, ordem_meses
+from modules.data import dados_tratados
 from modules.database import initialize_database
 from modules.pages import dashboard, cargas, aeroportos, regioes, rotas
 
@@ -17,6 +17,11 @@ def colored_card(metric_emoji, metric_label, metric_value, bg_color):
         """,
         unsafe_allow_html=True
     )
+
+ordem_meses = [
+    "JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO",
+    "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"
+]
 
 # Inicializar o banco de dados
 conn, cursor = initialize_database()
