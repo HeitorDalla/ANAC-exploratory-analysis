@@ -5,8 +5,6 @@ import airportsdata as air
 import plotly.express as px
 import numpy as np
 
-st.set_page_config(page_title="Análise de Rotas Aéreas", layout="wide", page_icon="✈️")
-
 st.markdown("""
     <style>
     .stTabs [data-baseweb="tab"] {
@@ -16,6 +14,21 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
+# Componente visual de destaque com cor personalizada
+def colored_card(metric_emoji, metric_label,metric_value, metric_type ,bg_color):
+    valor_formatado = formatar_valor(metric_value)
+    st.markdown(
+        f"""
+        <div style='background-color:{bg_color}; padding:20px; border-radius:10px; text-align:center;'>
+            <p style='margin:0; font-weight:bold; color:white; font-size:24px; min-height:50px'>
+                <span style='font-size:36px;'>{metric_emoji}</span> {metric_label}
+            </p>
+            <p style='margin:0; font-size:36px; color:white; font-weight:bold;'>{valor_formatado} {metric_type}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # Função para formatar grandes números
 def formatar_valor(valor):
@@ -29,17 +42,7 @@ def formatar_valor(valor):
         return f"{valor/1_000:.1f} mil"
     return str(valor)
 
-# Componente visual de destaque com cor personalizada
-def colored_card(metric_emoji, metric_label, metric_value, metric_type, bg_color):
-    valor_formatado = formatar_valor(metric_value)
-    st.markdown(f"""
-        <div style='background-color:{bg_color}; padding:20px; border-radius:20px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1);'>
-            <p style='margin:0; font-weight:600; color:white; font-size:20px;'>
-                <span style='font-size:32px;'>{metric_emoji}</span><br>{metric_label}
-            </p>
-            <p style='margin:0; font-size:28px; color:white; font-weight:bold;'>{valor_formatado} {metric_type}</p>
-        </div>
-    """, unsafe_allow_html=True)
+
 
 # Gráfico de pizza nacional/internacional
 def grafico_rotas_nacionais_internacionais(df):
@@ -135,22 +138,24 @@ def renderizar(df_filtrado):
         st.markdown("### 📊 Indicadores de Desempenho de Rotas")
         col1, col2, col3 = st.columns(3)
         with col1:
-            colored_card("🔁", "Rotas Únicas", total_rotas_unicas, "", "#388E3C")
+            colored_card("🔁", "Rotas Únicas", total_rotas_unicas, "", "#294273")
         with col2:
-            colored_card("✈️", "Total de Decolagens", total_decolagens, "", "#1976D2")
+            colored_card("✈️", "Total de Decolagens", total_decolagens, "", "#26658C")
         with col3:
-            colored_card("📐", "Média Passageiros/Rota", int(media_passageiros_por_rota), "", "#F57C00")
+            colored_card("📐", "Média Passageiros/Rota", int(media_passageiros_por_rota), "", "#307322")
 
         st.markdown('')
 
         col4, col5 = st.columns(2)
         with col4:
-            colored_card("🛬", "Rota Mais Longa (km)", distancia_mais_longa, "", "#7B1FA2")
+            colored_card("🛬", "Rota Mais Longa (km)", distancia_mais_longa, "", "#468C5F")
         with col5:
-            colored_card("⏱️", "Horas Totais Voada", total_horas_voadas, "", "#0288D1")
+            colored_card("⏱️", "Horas Totais Voada", total_horas_voadas, "", "#D9A714")
 
     with aba[1]:
         grafico_rotas_nacionais_internacionais(df_filtrado)
+
+    st.markdown('<br><br>', unsafe_allow_html=True)
 
     st.markdown("## 🌐 Mapa de Rotas com Coordenadas")
     icao_dict = air.load()

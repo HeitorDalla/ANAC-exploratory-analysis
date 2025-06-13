@@ -1,10 +1,10 @@
 import streamlit as st
+st.set_page_config(page_title="Dashboard ANAC", layout="wide")
 from modules.data import dados_tratados
 from modules.database import initialize_database
 from modules.pages import dashboard, cargas, regioes, rotas
 
 # Configurações Gerais da Página
-st.set_page_config(page_title="Dashboard ANAC", layout="wide")
 
 def colored_card(metric_emoji, metric_label, metric_value, bg_color):
     st.markdown(

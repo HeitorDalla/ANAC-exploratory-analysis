@@ -2,14 +2,26 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+def formatar_valor(valor):
+    if valor >= 2_000_000:
+        return f"{valor/1_000_000:.1f} milhões"
+    elif valor >= 1_000_000:
+        return f"{valor/1_000_000:.1f} milhão"
+    elif valor >= 2_000:
+        return f"{valor/1_000:.1f} mil"
+    elif valor >= 1_000:
+        return f"{valor/1_000:.1f} mil"
+    return str(valor)
+
 def colored_card(metric_emoji, metric_label,metric_value, metric_type ,bg_color):
+    valor_formatado = formatar_valor(metric_value)
     st.markdown(
         f"""
         <div style='background-color:{bg_color}; padding:20px; border-radius:10px; text-align:center;'>
             <p style='margin:0; font-weight:bold; color:white; font-size:24px; min-height:50px'>
                 <span style='font-size:36px;'>{metric_emoji}</span> {metric_label}
             </p>
-            <p style='margin:0; font-size:36px; color:white; font-weight:bold;'>{metric_value} {metric_type}</p>
+            <p style='margin:0; font-size:36px; color:white; font-weight:bold;'>{valor_formatado}</p>
         </div>
         """,
         unsafe_allow_html=True
@@ -17,7 +29,10 @@ def colored_card(metric_emoji, metric_label,metric_value, metric_type ,bg_color)
 
 def renderizar(df_filtrado):
 
-    st.markdown("<h1 style='text-align: center;'>📦 Análise de Cargas</h1>", unsafe_allow_html=True)
+    st.markdown("""
+        <h1 style='text-align:center; margin-bottom:10px;'>📦 Análise de Cargas</h1>
+        <b><p style='text-align:center; font-size:18px;'>Principais métricas sobre cargas e transportes</p></b>
+    """, unsafe_allow_html=True)
     
     # Cálculos
     distancia_total = int(df_filtrado['DISTÂNCIA VOADA (KM)'].sum()) if 'DISTÂNCIA VOADA (KM)' in df_filtrado.columns else 0
@@ -30,11 +45,11 @@ def renderizar(df_filtrado):
     # Exibindo os dados calculados
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        colored_card("📦", "Total Cargas Pagas", carga_paga_total, "Cargas" ,"#4CAF50")
+        colored_card("📦", "Total Cargas Pagas", carga_paga_total, "Cargas" ,"#02413C")
     with col2:
         colored_card("🎁", "Total Cargas Gratis", carga_gratis_total, "Cargas","#2196F3")
     with col3:
-        colored_card("✈️", "Distância Total Voadas", distancia_total, "KM" ,"#FF9800")
+        colored_card("✈️", "Distância Total Voadas", distancia_total, "KM" ,"#5B9004")
     with col4:
         colored_card("🕑", "Horas Voadas", horas_voadas_total, "Horas","#9C27B0")
 
@@ -93,6 +108,7 @@ def renderizar(df_filtrado):
         
         # Exibindo o gráfico
         st.plotly_chart(fig)
+
     
     # Exibindo o dataframe filtrado
     if not df_filtrado.empty:
