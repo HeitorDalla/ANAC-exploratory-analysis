@@ -21,7 +21,7 @@
 <pre>
 ANAC-EXPLORATORY-ANALYSIS/
 ├── 📁 csv/                  # Arquivos .csv usados no projeto para população dos Dados
-│   ├── resumo_anual_2025.csv
+│   └── resumo_anual_2025.csv
 ├── 📁 modules/             # Funções reutilizáveis e lógica de negócio
 │   ├── data.py
 │   └── database.py
