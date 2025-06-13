@@ -12,6 +12,10 @@
     <li><strong>Streamlit v1.45.1</strong>: Cria dashboards interativos com interface web. Usado para a análise exploratória e visualição dos dados preliminares.</li>
     <li><strong>Matplotlib v3.10.3</strong>: Usa-se para apresentar dados personalizados. Usado para customizar os dados representados em planilhas</li>
     <li><strong>Seaborn v0.13.2</strong>: Cria gráficos dinâmicos para visualização dos dados. Usado para mostrar os dados explorados em esquemas interativos.</li>
+    <li><strong>Plotly v6.1.2</strong>: Criação de gráficos interativos e visualizações de dados dinâmicas.</li>
+    <li><strong>Pydeck v0.9.1</strong>: Renderização de mapas 3D e visualizações geoespaciais avançadas.</li>
+    <li><strong>Airportsdata v20250523</strong>: Base de dados com informações e coordenadas de aeroportos mundiais.</li>
+    <li><strong>Numpy v2.2.6</strong>: Computação numérica e operações matemáticas em arrays multidimensionais.</li>
 </ul>
 
 <hr>
@@ -38,7 +42,59 @@ ANAC-EXPLORATORY-ANALYSIS/
 
 <hr>
 
-#FUNCIONALIDADES
+<h2>Funcionalidades</h2>
+
+<h3>🔍 Filtros Globais</h3>
+<img src="#" alt="" />
+<ul>
+    <li>O meun exibe uma interface que apresenta três campos de filtragem: <code>Mês</code>, <code>Empresa Aérea</code> e <code>UF Origem</code>.</li>
+    <li>Os botões de filtragem são opcionais, não precisando deles para a análise continuar.</li>
+</ul>
+
+<br>
+
+<h3>🏠 Visão Geral</h3>
+<img src="#" alt="" />
+<ol>
+    <li>Exibição de métricas de passageiros pagantes e não pagantes.</li>
+    <li>Total de carga paga transportada.</li>
+    <li>Gráfico de pizza com distribuição percentual de passageiros.</li>
+</ol>
+
+<br>
+
+<h3>🗺️ Análise de Regiões</h3>
+<img src="#" alt=""/>
+<ul>
+    <li>Gráfico de barras mostrando passageiros por região.</li>
+    <li>Gráfico de pizza com distribuição de voos por região.</li>
+    <li>Tabela com dados detalhados de aeroportos</li>
+</ul>
+
+<br>
+
+<h3>📦 Análise de Cargas</h3>
+<img src="#" alt="" />
+<ul>
+    <li>Métricas de cargas pagas e grátis em KG.</li>
+    <li>Total de distância voada e horas de voo.</li>
+    <li>Ranking configurável (Top 5 ou Top 10) de empresas por carga.</li>
+    <li>Gráfico interativo das principais empresas transportadoras.</li>
+    <li>Formatação automática de valores grandes.</li>
+</ul>
+
+<br>
+
+<h3>🔁 Análise de Rotas</h3>
+<img src="#" alt="" />
+<ul>
+    <li>Contagem de rotas únicas e total de decolagens.</li>
+    <li>Cálculo da média de passageiros por rota.</li>
+    <li>Identificação da rota mais longa em quilômetros.</li>
+    <li>Gráfico comparativo entre rotas nacionais e internacionais.</li>
+    <li>Mapa 3D interativo com coordenadas reais dos aeroportos.</li>
+    <li>Visualização de arcos conectando origem e destino dos voos.</li>
+</ul>
 
 <hr>
 
