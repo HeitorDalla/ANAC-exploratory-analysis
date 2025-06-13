@@ -1,7 +1,7 @@
 import streamlit as st
 from modules.data import dados_tratados
 from modules.database import initialize_database
-from modules.pages import dashboard, cargas, aeroportos, regioes, rotas
+from modules.pages import dashboard, cargas, regioes, rotas
 
 
 def colored_card(metric_emoji, metric_label, metric_value, bg_color):
@@ -32,6 +32,17 @@ dados = dados_tratados()
 # Configurações Gerais da Página
 st.set_page_config(page_title="Dashboard ANAC", layout="wide")
 
+st.markdown("""
+    <style>
+    .stTabs [data-baseweb="tab"] {
+        font-size: 1.5rem !important;
+        padding: 1.2rem 2rem !important;
+        font-weight: 600 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
 # Sidebar - Filtros Globais
 # st.sidebar.image("img/logo_anac.png", width=180)
 st.sidebar.markdown("### Agência Nacional de Aviação Civil")
@@ -51,7 +62,7 @@ if uf_origem_unicos:
 # ADICIONAR BOTÃO DE RESETAR TODOS OS FILTROS -----
 
 # Navegação dentro das páginas principais
-abas = st.tabs(["🏠 Visão Geral", "🗺️ Regiões", "✈️ Aeroportos", "📦 Cargas", "🔁 Rotas"])
+abas = st.tabs(["🏠 Visão Geral", "🗺️ Regiões", "📦 Cargas", "🔁 Rotas"])
 
 with abas[0]:
     dashboard.renderizar(filtro)
@@ -60,10 +71,7 @@ with abas[1]:
     regioes.renderizar(filtro)
 
 with abas[2]:
-    aeroportos.renderizar(filtro)
-
-with abas[3]:
     cargas.renderizar(filtro)
 
-with abas[4]:
+with abas[3]:
     rotas.renderizar(filtro)
