@@ -5,14 +5,39 @@ import airportsdata as air
 import plotly.express as px
 import numpy as np
 
+st.set_page_config(page_title="Análise de Rotas Aéreas", layout="wide", page_icon="✈️")
+
+st.markdown("""
+    <style>
+    .stTabs [data-baseweb="tab"] {
+        font-size: 1.5rem !important;
+        padding: 1.2rem 2rem !important;
+        font-weight: 600 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Função para formatar grandes números
+def formatar_valor(valor):
+    if valor >= 2_000_000:
+        return f"{valor/1_000_000:.1f} milhões"
+    elif valor >= 1_000_000:
+        return f"{valor/1_000_000:.1f} milhão"
+    elif valor >= 2_000:
+        return f"{valor/1_000:.1f} mil"
+    elif valor >= 1_000:
+        return f"{valor/1_000:.1f} mil"
+    return str(valor)
+
 # Componente visual de destaque com cor personalizada
 def colored_card(metric_emoji, metric_label, metric_value, metric_type, bg_color):
+    valor_formatado = formatar_valor(metric_value)
     st.markdown(f"""
         <div style='background-color:{bg_color}; padding:20px; border-radius:20px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1);'>
             <p style='margin:0; font-weight:600; color:white; font-size:20px;'>
                 <span style='font-size:32px;'>{metric_emoji}</span><br>{metric_label}
             </p>
-            <p style='margin:0; font-size:28px; color:white; font-weight:bold;'>{metric_value} {metric_type}</p>
+            <p style='margin:0; font-size:28px; color:white; font-weight:bold;'>{valor_formatado} {metric_type}</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -78,6 +103,10 @@ def renderizar(df_filtrado):
         <p style='text-align:center; font-size:18px;'>Resumo interativo de voos, passageiros e trajetos nacionais/internacionais</p>
     """, unsafe_allow_html=True)
 
+    if df_filtrado.empty:
+        st.warning("Nenhum dado disponível para a seleção atual.")
+        return
+
     total_rotas_unicas = df_filtrado.groupby([
         "AEROPORTO DE ORIGEM (SIGLA)", "AEROPORTO DE DESTINO (SIGLA)"
     ]).ngroups
@@ -88,11 +117,16 @@ def renderizar(df_filtrado):
     ])["PASSAGEIROS PAGOS"].sum()
     media_passageiros_por_rota = passageiros_por_rota.mean() or 0
 
-    rota_longa = df_filtrado.groupby([
-        "AEROPORTO DE ORIGEM (SIGLA)", "AEROPORTO DE DESTINO (SIGLA)"
-    ])["DISTÂNCIA VOADA (KM)"].sum().reset_index().sort_values(
-        by="DISTÂNCIA VOADA (KM)", ascending=False).iloc[0]
-    distancia_mais_longa = int(rota_longa["DISTÂNCIA VOADA (KM)"])
+    distancia_mais_longa = 0
+    if not df_filtrado.empty:
+        rota_longa_df = df_filtrado.groupby([
+            "AEROPORTO DE ORIGEM (SIGLA)", "AEROPORTO DE DESTINO (SIGLA)"
+        ])["DISTÂNCIA VOADA (KM)"].sum().reset_index()
+
+        if not rota_longa_df.empty:
+            rota_longa = rota_longa_df.sort_values(by="DISTÂNCIA VOADA (KM)", ascending=False).iloc[0]
+            distancia_mais_longa = int(rota_longa["DISTÂNCIA VOADA (KM)"])
+
     total_horas_voadas = int(df_filtrado["HORAS VOADAS"].sum())
 
     aba = st.tabs(["📊 Indicadores", "📈 Gráficos"])
