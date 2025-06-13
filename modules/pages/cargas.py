@@ -52,44 +52,52 @@ def renderizar(df_filtrado):
     # Selecionando os Top N
     carga_top = carga_por_empresa.head(top_n).reset_index()
 
-    # Criando o gráfico com Plotly
-    fig = px.bar(
-        carga_top,
-        x='EMPRESA (NOME)', 
-        y='CARGA PAGA (KG)',
-        title=f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
-        labels={'EMPRESA (NOME)': 'Companhia Aérea', 'CARGA PAGA (KG)': 'Carga Paga (KG)'},
-        color='CARGA PAGA (KG)',
-        color_continuous_scale='Viridis',
-        text='CARGA PAGA (KG)',
-        template='plotly_dark'
-    )
-    
-    # Melhorando os rótulos e a formatação
-    fig.update_layout(
-        height=500,
-        width=2000,
-        title={
-            'text': f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
-            'font': {'size': 24, 'family': 'Arial, sans-serif'},
-            'x': 0.5,
-            'xanchor': 'center',
-        },
-        yaxis_title={
-            'text': 'Carga Paga (KG)',
-            'font': {'size': 18, 'family': 'Arial, sans-serif'},
-        },
-        xaxis_tickangle=-45,
-        xaxis={'tickmode': 'array', 'tickvals': carga_top['EMPRESA (NOME)']},
-        yaxis={'tickformat': ',.0f'},
-        plot_bgcolor='rgba(0,0,0,0)', 
-        paper_bgcolor='rgba(0,0,0,0)',
-        margin=dict(l=40, r=40, t=40, b=100)
-    )
-    
-    # Exibindo o gráfico
-    st.plotly_chart(fig)
+    if carga_top.empty or carga_top['CARGA PAGA (KG)'].sum() == 0:
+        st.warning("Não há dados para serem exibidos.")
+    else:
 
+    # Criando o gráfico com Plotly
+        fig = px.bar(
+            carga_top,
+            x='EMPRESA (NOME)', 
+            y='CARGA PAGA (KG)',
+            title=f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
+            labels={'EMPRESA (NOME)': 'Companhia Aérea', 'CARGA PAGA (KG)': 'Carga Paga (KG)'},
+            color='CARGA PAGA (KG)',
+            color_continuous_scale='Viridis',
+            text='CARGA PAGA (KG)',
+            template='plotly_dark'
+        )
+        
+        # Melhorando os rótulos e a formatação
+        fig.update_layout(
+            height=500,
+            width=2000,
+            title={
+                'text': f'Top {top_n} Companhias Aéreas com Mais Cargas Pagas (KG)',
+                'font': {'size': 24, 'family': 'Arial, sans-serif'},
+                'x': 0.5,
+                'xanchor': 'center',
+            },
+            yaxis_title={
+                'text': 'Carga Paga (KG)',
+                'font': {'size': 18, 'family': 'Arial, sans-serif'},
+            },
+            xaxis_tickangle=-45,
+            xaxis={'tickmode': 'array', 'tickvals': carga_top['EMPRESA (NOME)']},
+            yaxis={'tickformat': ',.0f'},
+            plot_bgcolor='rgba(0,0,0,0)', 
+            paper_bgcolor='rgba(0,0,0,0)',
+            margin=dict(l=40, r=40, t=40, b=100)
+        )
+        
+        # Exibindo o gráfico
+        st.plotly_chart(fig)
+
+    
     # Exibindo o dataframe filtrado
-    st.markdown("<h1 style='text-align: center;'>Exibição da tabela</h1>", unsafe_allow_html=True)
-    st.dataframe(df_filtrado[['ANO', 'MÊS', 'EMPRESA (NOME)','EMPRESA (SIGLA)', 'DISTÂNCIA VOADA (KM)','HORAS VOADAS' ,'CARGA PAGA (KG)', 'CARGA GRÁTIS (KG)',]])
+    if not df_filtrado.empty:
+        st.markdown("<h1 style='text-align: center;'>Exibição da tabela</h1>", unsafe_allow_html=True)
+        st.dataframe(df_filtrado[['ANO', 'MÊS', 'EMPRESA (NOME)','EMPRESA (SIGLA)', 'DISTÂNCIA VOADA (KM)','HORAS VOADAS' ,'CARGA PAGA (KG)', 'CARGA GRÁTIS (KG)',]])
+    else:
+        st.warning("Não há dados para serem exibidos.")

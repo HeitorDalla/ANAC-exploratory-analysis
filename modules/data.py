@@ -16,6 +16,7 @@ def dados_tratados():
         11: "NOVEMBRO",
         12: "DEZEMBRO"
     }
+    
     df = pd.read_csv("csv/resumo_anual_2025.csv", delimiter=';', encoding='latin-1')
 
     df['HORAS VOADAS'] = df['HORAS VOADAS'].str.replace(',', '.', regex=False)

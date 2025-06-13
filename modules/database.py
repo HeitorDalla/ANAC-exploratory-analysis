@@ -97,6 +97,8 @@ def populate_tables(conn, cursor):
     
     conn.commit()
 
+    conn.close()
+
 # Função para inicializar o banco de dados
 def initialize_database():
     conn, cursor = getConnection()

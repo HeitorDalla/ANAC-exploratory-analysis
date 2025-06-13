@@ -2,6 +2,7 @@ import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pydeck as pdk
+import plotly.express as px
 
 def renderizar(df_filtrado):
     st.title("Análise das Regiões")
@@ -24,73 +25,39 @@ def renderizar(df_filtrado):
 
     st.markdown("---")
 
-    # Gráfico da distribuição de passageiros por região
-    df_filtrado['TOTAL_PASSAGEIROS'] = df_filtrado['PASSAGEIROS PAGOS'].fillna(0) + df_filtrado['PASSAGEIROS GRÁTIS'].fillna(0)
-    passageiros_regioes = df_filtrado.groupby('AEROPORTO DE DESTINO (REGIÃO)')['TOTAL_PASSAGEIROS'].sum().reset_index()
-    
-    # Remover valores NaN e zeros
-    passageiros_regioes = passageiros_regioes.dropna()
-    passageiros_regioes = passageiros_regioes[passageiros_regioes['TOTAL_PASSAGEIROS'] > 0]
-    
-    st.markdown("Distribuição de Passageiros por Região")
+    # Gráficos
+    col1, col2 = st.columns(2)
 
-    if len(passageiros_regioes) > 0:
-        fig, ax = plt.subplots(figsize=(8, 6))
-        ax.pie(passageiros_regioes['TOTAL_PASSAGEIROS'],
-            labels=passageiros_regioes['AEROPORTO DE DESTINO (REGIÃO)'],
-            autopct='%1.1f%%',
-            startangle=90,
-            colors=sns.color_palette("pastel"))
+    # Gráfico 1: Passageiros por Região
+    with col1:
+        st.subheader("📊 Passageiros por Região")
         
-        ax.set_title("Densidade de Passageiros por Região", pad=15, fontsize=12)
-        st.pyplot(fig)
-    else:
-        st.warning("Não há dados para serem exibidos.")
+        dados_regiao = df_filtrado.groupby('AEROPORTO DE DESTINO (REGIÃO)').agg({
+            'PASSAGEIROS PAGOS': 'sum',
+            'PASSAGEIROS GRÁTIS': 'sum'
+        }).reset_index()
 
-    # Mapa de densidade de passageiros por região
-    st.subheader("Densidade de Passageiros por Região")
-    
-    # Coordenadas corrigidas (longitude, latitude)
-    coords = {
-        'Norte': [-62.2, -3.5],
-        'Nordeste': [-34.9, -8.0],
-        'Centro-Oeste': [-47.9, -15.8],
-        'Sudeste': [-46.6, -23.5],
-        'Sul': [-51.2, -30.0]
-    }
+        dados_regiao['TOTAL'] = dados_regiao['PASSAGEIROS PAGOS'] + dados_regiao['PASSAGEIROS GRÁTIS']
 
-    # Usar dados de passageiros ao invés de contagem de voos
-    densidade_regioes = passageiros_regioes.copy()
-    densidade_regioes.columns = ['REGIAO', 'TOTAL_PASSAGEIROS']
-    
-    # Remover regiões não mapeadas
-    densidade_regioes = densidade_regioes[densidade_regioes['REGIAO'].isin(coords.keys())]
+        if dados_regiao['TOTAL'].sum() == 0 or dados_regiao.empty:
+            st.warning("Não há dados para serem exibidos.")
+        else:
+            fig1 = px.bar(dados_regiao, x='AEROPORTO DE DESTINO (REGIÃO)', y='TOTAL',
+                        title='Total de Passageiros por Região')
+            
+            st.plotly_chart(fig1, use_container_width=True)
 
-    # Adicionar lat/lon
-    densidade_regioes['longitude'] = densidade_regioes['REGIAO'].map(lambda x: coords[x][0])
-    densidade_regioes['latitude'] = densidade_regioes['REGIAO'].map(lambda x: coords[x][1])
+    # Gráfico 2: Distribuição de Voos por Região (Pizza)
+    with col2:
+        st.subheader("🥧 Distribuição de Voos por Região")
+        
+        voos_regiao = df_filtrado["AEROPORTO DE DESTINO (REGIÃO)"].value_counts().reset_index()
+        voos_regiao.columns = ['Região', 'Voos']
 
-    # Normalizar o raio baseado no número de passageiros
-    max_passageiros = densidade_regioes['TOTAL_PASSAGEIROS'].max()
-    densidade_regioes['radius'] = (densidade_regioes['TOTAL_PASSAGEIROS'] / max_passageiros) * 100000 + 20000
-
-    # Criar camada com cores baseadas na densidade
-    layer = pdk.Layer(
-        "ScatterplotLayer",
-        data=densidade_regioes,
-        get_position='[longitude, latitude]',
-        get_radius='radius',
-        get_fill_color='[255, 140, 0, 180]',
-        pickable=True
-    )
-
-    # Exibir o mapa
-    view_state = pdk.ViewState(latitude=-15.8, longitude=-47.9, zoom=4)
-    deck = pdk.Deck(layers=[layer], initial_view_state=view_state, 
-                   tooltip={"text": "Região: {REGIAO}\nPassageiros: {TOTAL_PASSAGEIROS:,}"})
-    st.pydeck_chart(deck)
-
-    # Exibindo o dataframe filtrado
-    st.markdown("<h1 style='text-align: center;'>Exibição da tabela</h1>", unsafe_allow_html=True)
-    colunas = ['EMPRESA (NACIONALIDADE)', 'AEROPORTO DE ORIGEM (SIGLA)', 'AEROPORTO DE ORIGEM (NOME)', 'AEROPORTO DE ORIGEM (REGIÃO)', 'AEROPORTO DE ORIGEM (PAÍS)', 'AEROPORTO DE ORIGEM (CONTINENTE)', 'AEROPORTO DE DESTINO (SIGLA)', 'AEROPORTO DE DESTINO (NOME)', 'AEROPORTO DE DESTINO (UF)', 'AEROPORTO DE DESTINO (REGIÃO)', 'AEROPORTO DE DESTINO (PAÍS)', 'AEROPORTO DE DESTINO (CONTINENTE)', 'NATUREZA', 'GRUPO DE VOO']
-    st.dataframe(df_filtrado[colunas])
+        if not voos_regiao.empty:
+            fig2 = px.pie(voos_regiao, values='Voos', names='Região',
+                        title='Distribuição de Voos por Região')
+            
+            st.plotly_chart(fig2, use_container_width=True)
+        else:
+            st.warning("Não há dados para serem exibidos.")
