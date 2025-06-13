@@ -1,4 +1,3 @@
-# melhorias visuais + ajustes UI/UX em Streamlit dashboard de rotas
 import streamlit as st
 import pydeck as pdk
 import airportsdata as air
