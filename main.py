@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from modules.data import dados_tratados
 from modules.database import initialize_database
-from modules.pages import dashboard, cargas, aeroportos, regioes, rotas
+from modules.pages import dashboard, cargas, regioes, rotas
 
 
 def colored_card(metric_emoji, metric_label, metric_value, bg_color):
@@ -52,7 +52,7 @@ if uf_origem_unicos:
 # ADICIONAR BOTÃO DE RESETAR TODOS OS FILTROS -----
 
 # Navegação dentro das páginas principais
-abas = st.tabs(["🏠 Visão Geral", "🗺️ Regiões", "✈️ Aeroportos", "📦 Cargas", "🔁 Rotas"])
+abas = st.tabs(["🏠 Visão Geral", "🗺️ Regiões", "📦 Cargas", "🔁 Rotas"])
 
 with abas[0]:
     dashboard.renderizar(filtro)
@@ -61,10 +61,7 @@ with abas[1]:
     regioes.renderizar(filtro)
 
 with abas[2]:
-    aeroportos.renderizar(filtro)
-
-with abas[3]:
     cargas.renderizar(filtro)
 
-with abas[4]:
+with abas[3]:
     rotas.renderizar(filtro)
