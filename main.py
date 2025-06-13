@@ -48,15 +48,17 @@ st.sidebar.markdown("### Agência Nacional de Aviação Civil")
 meses_ordenados = [m for m in ordem_meses if m in dados["MÊS"].unique()]
 
 # Filtros aplicáveis a todas as páginas
-mes_unicos = st.sidebar.selectbox("Mês", meses_ordenados)
+opcoes_meses = ["Todos os Meses"] + meses_ordenados
+mes_selecionado = st.sidebar.selectbox("Mês", opcoes_meses)
+
 empresa_unicas = st.sidebar.multiselect("Empresa Aérea", dados["EMPRESA (NOME)"].unique())
 ufs_disponiveis = dados["AEROPORTO DE ORIGEM (UF)"].unique()
 uf_origem_unicos = st.sidebar.multiselect("UF Origem", ufs_disponiveis if "PR" in ufs_disponiveis else [])
 
 # Aplicação dos filtros
 filtro = dados.copy()
-if mes_unicos:
-    filtro = filtro[filtro["MÊS"] == mes_unicos]
+if mes_selecionado != 'Todos os Meses':
+    filtro = filtro[filtro["MÊS"] == mes_selecionado]
 if empresa_unicas:
     filtro = filtro[filtro["EMPRESA (NOME)"].isin(empresa_unicas)]
 if uf_origem_unicos:

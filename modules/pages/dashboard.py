@@ -25,7 +25,6 @@ def renderizar (df_filtrado):
     st.markdown("---")
 
     # Gráficos
-
     # Gráfico de pizza mostrando a porcentagem em comparação aos pagantes e não pagantes
     porcentagem_pagante = df_filtrado['PASSAGEIROS PAGOS'].sum()
     porcentagem_nao_pagante = df_filtrado['PASSAGEIROS GRÁTIS'].sum()

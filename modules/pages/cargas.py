@@ -93,11 +93,10 @@ def renderizar(df_filtrado):
         
         # Exibindo o gráfico
         st.plotly_chart(fig)
-
     
     # Exibindo o dataframe filtrado
     if not df_filtrado.empty:
         st.markdown("<h1 style='text-align: center;'>Exibição da tabela</h1>", unsafe_allow_html=True)
-        st.dataframe(df_filtrado[['ANO', 'MÊS', 'EMPRESA (NOME)','EMPRESA (SIGLA)', 'DISTÂNCIA VOADA (KM)','HORAS VOADAS' ,'CARGA PAGA (KG)', 'CARGA GRÁTIS (KG)',]])
+        st.dataframe(df_filtrado[['ANO', 'MÊS', 'EMPRESA (NOME)','EMPRESA (SIGLA)', 'DISTÂNCIA VOADA (KM)','HORAS VOADAS' ,'CARGA PAGA (KG)', 'CARGA GRÁTIS (KG)']])
     else:
         st.warning("Não há dados para serem exibidos.")

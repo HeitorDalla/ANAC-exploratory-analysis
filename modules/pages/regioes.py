@@ -61,3 +61,10 @@ def renderizar(df_filtrado):
             st.plotly_chart(fig2, use_container_width=True)
         else:
             st.warning("Não há dados para serem exibidos.")
+
+    # Exibindo o dataframe filtrado
+    if not df_filtrado.empty:
+        st.markdown("<h1 style='text-align: center;'>Exibição da tabela</h1>", unsafe_allow_html=True)
+        st.dataframe(df_filtrado[['AEROPORTO DE ORIGEM (SIGLA)', 'AEROPORTO DE ORIGEM (NOME)', 'AEROPORTO DE ORIGEM (UF)', 'AEROPORTO DE ORIGEM (REGIÃO)','AEROPORTO DE ORIGEM (PAÍS)', 'AEROPORTO DE ORIGEM (CONTINENTE)', 'AEROPORTO DE DESTINO (SIGLA)', 'AEROPORTO DE DESTINO (NOME)', 'AEROPORTO DE DESTINO (UF)', 'AEROPORTO DE DESTINO (REGIÃO)', 'AEROPORTO DE DESTINO (PAÍS)', 'AEROPORTO DE DESTINO (CONTINENTE)', 'NATUREZA', 'GRUPO DE VOO']])
+    else:
+        st.warning("Não há dados para serem exibidos.")
