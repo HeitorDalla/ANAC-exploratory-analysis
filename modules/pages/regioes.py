@@ -4,26 +4,51 @@ import matplotlib.pyplot as plt
 import pydeck as pdk
 import plotly.express as px
 
+def formatar_valor(valor):
+    if valor >= 2_000_000:
+        return f"{valor/1_000_000:.1f} milhões"
+    elif valor >= 1_000_000:
+        return f"{valor/1_000_000:.1f} milhão"
+    elif valor >= 2_000:
+        return f"{valor/1_000:.1f} mil"
+    elif valor >= 1_000:
+        return f"{valor/1_000:.1f} mil"
+    return str(valor)
+
+def colored_card(metric_emoji, metric_label, metric_value, bg_color):
+    valor_formatado = formatar_valor(metric_value)
+    st.markdown(
+        f"""
+        <div style='background-color:{bg_color}; padding:20px; border-radius:10px; text-align:center;'>
+            <p style='margin:0; font-weight:bold; color:white; font-size:24px; min-height:50px'>
+                <span style='font-size:36px;'>{metric_emoji}</span> {metric_label}
+            </p>
+            <p style='margin:0; font-size:36px; color:white; font-weight:bold;'>{valor_formatado}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 def renderizar(df_filtrado):
     st.title("Análise das Regiões")
     st.markdown("---")
 
-    # Big Numbers
-    coluna1, coluna2, coluna3 = st.columns(3)
-    
-    with coluna1:
-        total_passageiros = (df_filtrado['PASSAGEIROS PAGOS'].fillna(0) + df_filtrado['PASSAGEIROS GRÁTIS'].fillna(0)).sum()
-        st.metric("Total Passageiros", f"{int(total_passageiros):,}")
-    
-    with coluna2:
-        total_voos = len(df_filtrado)
-        st.metric("Total Voos", f"{total_voos:,}")
-    
-    with coluna3:
-        regioes_count = df_filtrado['AEROPORTO DE DESTINO (REGIÃO)'].nunique()
-        st.metric("Regiões Atendidas", regioes_count)
+   # Cálculos
+    total_passageiros = int((df_filtrado['PASSAGEIROS PAGOS'].fillna(0) + df_filtrado['PASSAGEIROS GRÁTIS'].fillna(0)).sum())
+    total_voos = len(df_filtrado)
+    regioes_count = df_filtrado['AEROPORTO DE DESTINO (REGIÃO)'].nunique()
 
-    st.markdown("---")
+    # Big Numbers
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        colored_card("👥", "Total Passageiros", total_passageiros, "#02413C")
+    
+    with col2:
+        colored_card("✈️", "Total Voos", total_voos, "#2196F3")
+    
+    with col3:
+        colored_card("🌍", "Regiões Atendidas", regioes_count, "#5B9004")
 
     # Gráficos
     col1, col2 = st.columns(2)
