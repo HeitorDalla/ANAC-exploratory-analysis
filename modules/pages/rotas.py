@@ -41,8 +41,6 @@ def formatar_valor(valor):
         return f"{valor/1_000:.1f} mil"
     return str(valor)
 
-
-
 # Gráfico de pizza nacional/internacional
 def grafico_rotas_nacionais_internacionais(df):
     df["TIPO ROTA"] = df["AEROPORTO DE DESTINO (PAÍS)"].apply(
