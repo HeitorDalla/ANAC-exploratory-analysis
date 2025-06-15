@@ -45,7 +45,7 @@ ANAC-EXPLORATORY-ANALYSIS/
 <h2>Funcionalidades</h2>
 
 <h3>🔍 Filtros Globais</h3>
-<img src="#" alt="" />
+<img src="./img/FILTROS_PRINCIPAIS.png" alt="Demonstração dos Filtros Principais da Página" />
 <ul>
     <li>O meun exibe uma interface que apresenta três campos de filtragem: <code>Mês</code>, <code>Empresa Aérea</code> e <code>UF Origem</code>.</li>
     <li>Os botões de filtragem são opcionais, não precisando deles para a análise continuar.</li>
@@ -54,7 +54,7 @@ ANAC-EXPLORATORY-ANALYSIS/
 <br>
 
 <h3>🏠 Visão Geral</h3>
-<img src="#" alt="" />
+<img src="./img/DASHBOARD_PRINCIPAL.gif" alt="Demonstração do Dashboard Principal" />
 <ol>
     <li>Exibição de métricas de passageiros pagantes e não pagantes.</li>
     <li>Total de carga paga transportada.</li>
@@ -64,7 +64,7 @@ ANAC-EXPLORATORY-ANALYSIS/
 <br>
 
 <h3>🗺️ Análise de Regiões</h3>
-<img src="#" alt=""/>
+<img src="./img/REGIOES.gif" alt="Demonstração da Página de Regiões"/>
 <ul>
     <li>Gráfico de barras mostrando passageiros por região.</li>
     <li>Gráfico de pizza com distribuição de voos por região.</li>
@@ -74,7 +74,7 @@ ANAC-EXPLORATORY-ANALYSIS/
 <br>
 
 <h3>📦 Análise de Cargas</h3>
-<img src="#" alt="" />
+<img src="./img/CARGAS.gif" alt="Demonstração da Página de Cargas" />
 <ul>
     <li>Métricas de cargas pagas e grátis em KG.</li>
     <li>Total de distância voada e horas de voo.</li>
@@ -86,7 +86,7 @@ ANAC-EXPLORATORY-ANALYSIS/
 <br>
 
 <h3>🔁 Análise de Rotas</h3>
-<img src="#" alt="" />
+<img src="./img/ROTAS.gif" alt="Demonstração da Página de Rotas" />
 <ul>
     <li>Contagem de rotas únicas e total de decolagens.</li>
     <li>Cálculo da média de passageiros por rota.</li>
