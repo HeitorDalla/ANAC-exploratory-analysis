@@ -75,13 +75,13 @@ def renderizar(df_filtrado):
     # Gráfico 2: Distribuição de Voos por Região (Pizza)
     with col2:
         st.subheader("🥧 Distribuição de Voos por Região")
-        
+        cores_frias = ['#4F81BD', '#76B7B2', '#6A5ACD', '#5DA5DA', '#60BD68']
         voos_regiao = df_filtrado["AEROPORTO DE DESTINO (REGIÃO)"].value_counts().reset_index()
         voos_regiao.columns = ['Região', 'Voos']
 
         if not voos_regiao.empty:
             fig2 = px.pie(voos_regiao, values='Voos', names='Região',
-                        title='Distribuição de Voos por Região')
+                        title='Distribuição de Voos por Região', color_discrete_sequence=cores_frias)
             
             st.plotly_chart(fig2, use_container_width=True)
         else:

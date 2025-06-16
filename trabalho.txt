@@ -1,6 +1,6 @@
 # Criando um norte para Análise ser feita
 
-# Escolhemos simular que somos analistas de dados da ENAC 
+# Escolhemos simular que somos analistas de dados da ANAC 
 e que precisamos apresentar um dashboard para os gestores da ANAC com o objetivo de entender
 qual o desempenho e obstáculos do setor aéreo nacional.
 
